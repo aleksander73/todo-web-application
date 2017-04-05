@@ -19,9 +19,10 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "UPDATE $database.tasks SET Name=:name WHERE ID=:id";
-$parameters = array('name' => $taskName, 'id' => $taskID);
-
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':name', $taskName);
+$statement->bindParam(':id', $taskID);
+$success = $statement->execute();
 
 if($success) {
     $responseMessage = "info: Task '$taskName' updated in the database";

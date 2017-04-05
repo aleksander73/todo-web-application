@@ -19,9 +19,10 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "INSERT INTO $database.tasks(Name, Username) VALUES (:name, :username)";
-$parameters = array('name' =>$taskName, 'username' => $_SESSION['username']);
-
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':name', $taskName);
+$statement->bindParam(':username', $_SESSION['username']);
+$success = $statement->execute();
 
 if($success) {
     $responseMessage = "info: Task '$taskName' stored in the database";

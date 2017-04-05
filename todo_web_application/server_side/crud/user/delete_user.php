@@ -13,9 +13,9 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "DELETE FROM $database.users WHERE Username=:username";
-$parameters = array('username' => $_SESSION['username']);
-
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':username', $_SESSION['username']);
+$success = $statement.execute();
 
 if($success) {
     $responseMessage = "info: User $userUsername deleted from the database";

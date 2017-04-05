@@ -20,10 +20,9 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../config.ini')['dbname'];
 
 $sql = "SELECT * FROM $database.users WHERE Username=:username";
-$parameters = array('username' => $receivedUsername);
-
 $statement = $pdo->prepare($sql);
-$statement->execute($parameters);
+$statement->bindParam(':username', $receivedUsername);
+$statement->execute();
 $statement->setFetchMode(PDO::FETCH_ASSOC);
 
 // Fetch the only row in result set

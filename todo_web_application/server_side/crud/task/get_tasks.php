@@ -13,10 +13,9 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "SELECT ID, Name FROM $database.tasks WHERE Username=:_username";
-$parameters = array('_username' => $_SESSION['username']);
-
 $statement = $pdo->prepare($sql);
-$statement->execute($parameters);
+$statement->bindParam(':_username', $_SESSION['username']);
+$statement->execute();
 $statement->setFetchMode(PDO::FETCH_ASSOC);
 
 $responseTasks = $statement->fetchAll();

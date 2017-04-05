@@ -21,7 +21,10 @@ $database = parse_ini_file('../../config.ini')['dbname'];
 $sql = "UPDATE $database.users SET Password=:password WHERE Username=:username";
 $parameters = array('password' => $userPassword, 'username' => $_SESSION['username']);
 
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':password', $userPassword);
+$statement->bindParam(':username', $_SESSION['username']);
+$success = $statement->execute();
 
 if($success) {
     $responseMessage = "info: User '$userUsername' updated in the database";

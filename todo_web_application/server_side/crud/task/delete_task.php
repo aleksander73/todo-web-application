@@ -18,9 +18,9 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "DELETE FROM $database.tasks WHERE ID=:id";
-$parameters = array('id' => $taskID);
-
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':id', $taskID);
+$success = $statement->execute();
 
 if($success) {
     $responseMessage = "info: Task with ID = '$taskID' deleted from the database";

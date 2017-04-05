@@ -19,9 +19,10 @@ $pdo = DB_Manager::getInstance()->openConnection();
 $database = parse_ini_file('../../config.ini')['dbname'];
 
 $sql = "INSERT INTO $database.users(Username, Password) VALUES (:username, :password)";
-$parameters = array('username' => $userUsername, 'password' => $userPassword);
-
-$success = $pdo->prepare($sql)->execute($parameters);
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':username', $userUsername);
+$statement->bindParam(':password', $userPassword);
+$success = $statement->execute();
 
 if($success) {
     $responseMessage = "info: New user '$userUsername' stored in the database";
